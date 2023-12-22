@@ -1,0 +1,10 @@
+# Global dependencies of the project
+fire
+openai>=1.2
+streamlit
+joblib
+pandas
+streamlit
+
+# edo dependencies
+ds-mkt-utils-ml
