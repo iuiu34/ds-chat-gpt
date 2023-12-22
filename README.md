@@ -38,3 +38,4 @@ pip install -e .
 ## License
 
 This project is property of *edo*
+# ds-chat-gpt
