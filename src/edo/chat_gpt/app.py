@@ -23,7 +23,7 @@ def get_chat(messages, c1, last=False):
         role = chat_["role"]
         content = chat_["content"]
 
-        if role == 'system':
+        if role in ['system', 'tool_call', 'tool_response']:
             continue
 
         if role == 'function':
@@ -34,8 +34,7 @@ def get_chat(messages, c1, last=False):
         chat_message_ = c1.chat_message(role, avatar=avatar)
 
         print(content)
-        if role in ['user', 'assistant']:
-            chat_message_.markdown(content)
+        chat_message_.markdown(content)
 
 
 class LlmModel(LlmBaseModel):
@@ -71,7 +70,7 @@ def app():
                 print(chunk_, end="")
                 message += chunk_
                 with empty.chat_message("assistant", avatar=get_avatar("assistant")):
-                    st.text(message)
+                    st.markdown(message)
                 # get_chat(messages, empty, last=True)
 
         messages.add_assistant(message)
