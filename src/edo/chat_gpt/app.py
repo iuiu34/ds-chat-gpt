@@ -1,6 +1,9 @@
 """Main module."""
+
 import streamlit as st
 from edo.mkt.ml.llm import LlmBaseModel, Messages
+
+from edo.chat_gpt._utils.theme import theme_css
 
 
 def get_avatar(role):
@@ -31,10 +34,9 @@ def get_chat(messages, c1, last=False):
 
         avatar = get_avatar(role)
 
-        chat_message_ = c1.chat_message(role, avatar=avatar)
-
         print(content)
-        chat_message_.markdown(content)
+        chat_message_ = c1.chat_message(role, avatar=avatar)
+        chat_message_.markdown(content, unsafe_allow_html=True)
 
 
 class LlmModel(LlmBaseModel):
@@ -42,36 +44,40 @@ class LlmModel(LlmBaseModel):
 
 
 def app():
+    st.set_page_config(page_title=f'chatGPT', layout="wide")
+    st.markdown(theme_css, unsafe_allow_html=True)
+
     model = LlmModel()
     prompt = st.chat_input()
 
-    with st.expander("Config"):
+    c1, c2, c3 = st.columns([1, 1, 3])
+    c1.subheader("messages")
+
+    with c3.expander("Config"):
         model.model = st.text_input("model", model.model)
         model.system = st.text_area("system", model.system.strip())
-        model.prompt_template = st.text_area("prompt_template", model.prompt_template.strip())
-        if st.button("new chat"):
-            del st.session_state["messages"]
 
     messages = st.session_state.get("messages", Messages())
 
-
-    st.subheader("messages")
-    get_chat(messages, st)
+    if c2.button("new chat"):
+        del st.session_state["messages"]
+        st.rerun()
+    ct = st.container(height=512)
+    get_chat(messages, ct)
     if prompt:
         prompt = prompt.strip()
         messages.add_user(prompt)
-        get_chat(messages, st, last=True)
+        get_chat(messages, ct, last=True)
         stream = model.predict_stream(messages=messages)
         message = ''
-        empty = st.empty()
+        empty = ct.empty()
         for chunk in stream:
             chunk_ = chunk.choices[0].delta.content
             if chunk_ is not None:
                 print(chunk_, end="")
                 message += chunk_
                 with empty.chat_message("assistant", avatar=get_avatar("assistant")):
-                    st.markdown(message)
-                # get_chat(messages, empty, last=True)
+                    st.markdown(message, unsafe_allow_html=True)
 
         messages.add_assistant(message)
     st.session_state["messages"] = messages
