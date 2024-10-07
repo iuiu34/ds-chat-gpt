@@ -14,7 +14,7 @@ spec:
       serviceAccountName: ds-mkt-ltv@ds-mkt.iam.gserviceaccount.com
       timeoutSeconds: 600
       containers:
-      - image: europe-docker.pkg.dev/ds-mkt/app/ds-chat-gpt-backend:v0.0.1rc9
+      - image: europe-docker.pkg.dev/ds-mkt/app/ds-chat-gpt-backend:v0.0.1rc10
         env:
           - name: PROJECT
             value: ds-mkt
