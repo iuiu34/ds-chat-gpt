@@ -26,7 +26,9 @@ COPY --from=builder /app /app
 COPY --from=builder /etc/pip.conf /etc/pip.conf
 
 COPY container/nginx.conf /etc/nginx/conf.d/default.conf
+COPY container/supervisord.conf /etc/supervisord.conf
 
 WORKDIR /app
 EXPOSE 8080
-CMD ["sh", "-c", "streamlit run app.py  --server.port=8501 --server.enableCORS=false & nginx -g 'daemon off;'"]
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+
