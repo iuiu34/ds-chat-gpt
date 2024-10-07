@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.9-slim AS builder
 
 RUN pip install --upgrade pip
 RUN pip install --no-input keyrings.google-artifactregistry-auth
@@ -17,12 +17,27 @@ COPY src/ model/src/
 
 RUN cd model && pip install . && cd ..
 
-# ENTRYPOINT ["bash"]
-
-# app
 COPY src/edo/chat_gpt/app app/
 RUN mkdir -p app/tmp
 
-WORKDIR app
+FROM nginx:alpine
+
+COPY --from=builder /app /app
+COPY --from=builder /etc/pip.conf /etc/pip.conf
+
+COPY <<EOF /etc/nginx/conf.d/default.conf
+server {
+    listen 8080;
+    location /app/ {
+        proxy_pass http://localhost:8501/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+EOF
+
+WORKDIR /app
 EXPOSE 8080
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8080", "--server.address=0.0.0.0"]
+CMD ["sh", "-c", "streamlit run app.py --server.port=8501 --server.address=0.0.0.0 & nginx -g 'daemon off;'"]
