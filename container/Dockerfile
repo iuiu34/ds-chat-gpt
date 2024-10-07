@@ -25,7 +25,7 @@ FROM nginx:alpine
 COPY --from=builder /app /app
 COPY --from=builder /etc/pip.conf /etc/pip.conf
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY container/nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /app
 EXPOSE 8080
