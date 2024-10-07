@@ -29,4 +29,4 @@ COPY container/nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /app
 EXPOSE 8080
-ENTRYPOINT ["sh", "-c", "streamlit run app.py --server.port=8501 --server.address=0.0.0.0 & nginx -g 'daemon off;'"]
+ENTRYPOINT ["sh", "-c", "streamlit run app.py --server.port=8501 --server.address=0.0.0.0 --server.enableCORS=false & nginx -g 'daemon off;'"]
