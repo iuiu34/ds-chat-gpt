@@ -14,14 +14,12 @@ spec:
       serviceAccountName: ds-mkt@ds-mkt.iam.gserviceaccount.com
       timeoutSeconds: 600
       containers:
-      - image: europe-docker.pkg.dev/ds-mkt/app/ds-chat-gpt-backend:v0.0.1rc1
+      - image: europe-docker.pkg.dev/ds-mkt/app/ds-chat-gpt-backend:v0.0.1rc2
         env:
           - name: PORT
             value: "81"
           - name: PROJECT
             value: ds-mkt
-          - name: PROJECT_FIREBASE
-            value: boschmonart
           - name: DATASET
             value: ds_chat_gpt
           - name: CLOUD_RUN
