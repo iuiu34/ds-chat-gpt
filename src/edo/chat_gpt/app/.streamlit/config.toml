@@ -4,3 +4,6 @@ backgroundColor = "white"
 
 [client]
 showErrorDetails = false
+
+[server]
+baseUrlPath = "chatgpt"
