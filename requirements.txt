@@ -3,7 +3,6 @@ fire
 openai>=1.50
 streamlit
 pandas
-streamlit
 pyyaml
 
 # edo dependencies
