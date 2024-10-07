@@ -25,18 +25,7 @@ FROM nginx:alpine
 COPY --from=builder /app /app
 COPY --from=builder /etc/pip.conf /etc/pip.conf
 
-COPY <<EOF /etc/nginx/conf.d/default.conf
-server {
-    listen 8080;
-    location /chatgpt/ {
-        proxy_pass http://localhost:8501/;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-EOF
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 WORKDIR /app
 EXPOSE 8080
