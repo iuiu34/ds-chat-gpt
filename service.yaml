@@ -11,15 +11,15 @@ spec:
         run.googleapis.com/execution-environment: gen2
         run.googleapis.com/startup-cpu-boost: 'true'
     spec:
-      serviceAccountName: ds-gcloud-lab@ds-gcloud-lab.iam.gserviceaccount.com
+      serviceAccountName: ds-mkt@ds-mkt.iam.gserviceaccount.com
       timeoutSeconds: 600
       containers:
-      - image: europe-docker.pkg.dev/ds-gcloud-lab/app/ds-chat-gpt-backend:v0.0.1
+      - image: europe-docker.pkg.dev/ds-mkt/app/ds-chat-gpt-backend:v0.0.1rc1
         env:
           - name: PORT
             value: "81"
           - name: PROJECT
-            value: ds-gcloud-lab
+            value: ds-mkt
           - name: PROJECT_FIREBASE
             value: boschmonart
           - name: DATASET
