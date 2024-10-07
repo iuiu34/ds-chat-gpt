@@ -127,9 +127,9 @@ def deploy_app(repo,
         # run(cmd)
         cmd = f"gcloud run services replace {filename}"
         run(cmd)
-        cmd = f'gcloud run services add-iam-policy-binding {service_name} ' \
-              f'--member="allUsers" --role="roles/run.invoker"'
-        run(cmd)
+        # cmd = f'gcloud run services add-iam-policy-binding {service_name} ' \
+        #       f'--member="allUsers" --role="roles/run.invoker"'
+        # run(cmd)
     elif app_engine:
         cmd = f"gcloud app deploy {filename} -q --image-url={image_url}"
         run(cmd)
