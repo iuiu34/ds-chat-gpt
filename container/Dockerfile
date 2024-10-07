@@ -28,7 +28,7 @@ COPY --from=builder /etc/pip.conf /etc/pip.conf
 COPY <<EOF /etc/nginx/conf.d/default.conf
 server {
     listen 8080;
-    location /app/ {
+    location /chatgpt/ {
         proxy_pass http://localhost:8501/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
